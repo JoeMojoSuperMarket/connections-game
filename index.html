@@ -8,19 +8,62 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Gooper', sans-serif; /* Fallback to sans-serif if 'Gooper' is not available */
   background-color: #1A1A1A;
   color: #FFFFFF;
   margin: 0;
   padding: 20px;
 }
+
+#floating-image {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100px; /* Adjust based on your image size */
+  height: auto;
+  animation: rotate 20s linear infinite;
+  transition: left 2s linear, top 2s linear; /* Ensure transition is applied */
+  z-index: -1;
+}
+
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@font-face {
+  font-family: 'Gooper';
+  src: url('fonts/Gooper-Bold.otf') format('otf'),
+       url('fonts/Gooper-Bold.otf') format('otf'),
+       url('fonts/Gooper-Bold.otf') format('otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+#game-title {
+  text-align: center;
+  color: #FFFF00; /* Assuming you want white text for your title */
+  margin-top: 20px; /* Add space above the title if needed */
+  margin-bottom: 20px; /* Space before the grid starts */
+  font-size: 24px; /* Or any other size that fits your design */
+  font-weight: 700; /* Makes the font bold */
+  z-index: 1;
+}
+
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 10px;
   max-width: 600px;
   margin: 40px auto;
   padding: 10px;
+  z-index: 1;
 }
 .grid-item {
   border: none;
@@ -29,9 +72,9 @@ body {
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
   user-select: none;
-  background-color: #2D2D2D;
-  font-family: 'Poppins', sans-serif;
-  color: #FFFFFF;
+  background-color: #000000;
+  font-family: 'Gooper', sans-serif; /* Fallback to sans-serif if 'Gooper' is not available */
+  color: #FFF00F;
   font-size: 18px;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -96,7 +139,7 @@ body {
 /* Responsive adjustments */
 @media only screen and (max-width: 768px) {
   .grid-container {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr); /* Adjust for smaller tablets */
     gap: 5px;
     max-width: 90%;
   }
@@ -112,19 +155,33 @@ body {
 }
 @media only screen and (max-width: 480px) {
   .grid-container {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(3, 1fr); /* Enforces three columns on mobile devices */
+    gap: 5px;
+    max-width: 90%;
   }
-  body {
+  .grid-item {
     padding: 10px;
+    font-size: 12px; /* Adjust the font size for smaller screens */
   }
   .group-box {
-    width: 90%;
+    padding: 8px;
+    border-radius: 16px;
+    margin: 5px;
+  }
+  #status {
     margin: 10px auto;
   }
 }
+
+
+
+/* Additional responsive adjustments can be added if needed */
 </style>
 </head>
 <body>
+<img src="images/m0j0.png" id="floating-image" alt="Floating Image">
+
+<h1 id="game-title">Very Fun Advertising Game</h1>
 
 <div id="game-board" class="grid-container">
   <!-- Grid items will be inserted here by JavaScript -->
@@ -248,5 +305,42 @@ function createBoard() {
 
 createBoard();
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const img = document.getElementById('floating-image');
+  const speed = 100; // pixels per second
+
+  function moveImage() {
+    const maxX = window.innerWidth - img.offsetWidth;
+    const maxY = window.innerHeight - img.offsetHeight;
+
+    const startX = img.offsetLeft;
+    const startY = img.offsetTop;
+
+    // Generate a new position within or slightly beyond the viewport boundaries
+    const newX = Math.random() * (maxX + img.offsetWidth * 2) - img.offsetWidth;
+    const newY = Math.random() * (maxY + img.offsetHeight * 2) - img.offsetHeight;
+
+    // Calculate the distance to the new point
+    const distance = Math.sqrt(Math.pow(newX - startX, 2) + Math.pow(newY - startY, 2));
+
+    // Determine the duration needed to move that distance at the specified speed
+    const duration = distance / speed;
+
+    // Apply the calculated duration and set the new position
+    img.style.transition = `left ${duration}s linear, top ${duration}s linear`;
+    img.style.left = newX + 'px';
+    img.style.top = newY + 'px';
+  }
+
+  // Move the image to a new location as soon as the current transition ends
+  img.addEventListener('transitionend', moveImage);
+
+  // Initial move
+  moveImage();
+});
+</script>
+
 </body>
 </html>
