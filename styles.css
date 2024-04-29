@@ -229,3 +229,10 @@ body {
     text-decoration: none;
     cursor: pointer;
 }
+
+#floating-image {
+    position: fixed; /* Needed to position it relative to the viewport */
+    width: 100px; /* Adjust size as necessary */
+    height: auto;
+    transition: top 3s, left 3s; /* Smooth transition for moving */
+}

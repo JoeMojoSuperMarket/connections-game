@@ -1,3 +1,27 @@
+function moveFloatingImage() {
+    const img = document.getElementById('floating-image');
+    if (!img) return; // Exit if the image is not found
+
+    const maxX = window.innerWidth - img.offsetWidth;
+    const maxY = window.innerHeight - img.offsetHeight;
+
+    // Generate random new positions within the bounds of the window
+    const newX = Math.random() * maxX;
+    const newY = Math.random() * maxY;
+
+    img.style.left = newX + 'px';
+    img.style.top = newY + 'px';
+
+    // Schedule the next move in 3 seconds
+    setTimeout(moveFloatingImage, 3000);
+}
+
+// Start moving the image when the window is loaded
+window.onload = function() {
+    moveFloatingImage();
+}
+
+
 const groups = {
     'Where All My Ideas Go': ['Graveyard', 'Bench', 'Appendix', 'Skip'],
     'Things Creative Directors Hate': ['Reading', 'Sobriety', 'You', 'Listening'],
