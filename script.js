@@ -80,7 +80,7 @@ function handleClick(word) {
         const correct = checkSelection();
         if (!correct) {
             tries--;
-            document.getElementById('tries').textContent = tries;
+            updateTriesDisplay();
             selected.forEach(selectedWord => {
                 const selectedElement = document.getElementById(selectedWord);
                 selectedElement.classList.remove('highlighted');
@@ -96,19 +96,28 @@ function handleClick(word) {
 }
 
 function offerOptions() {
-    const userChoice = confirm("Would you like to try again? Click 'Cancel' to see the answers.");
-    if (userChoice) {
+    const modal = document.getElementById('confirmModal');
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+
+    modal.style.display = "block"; // Show the modal
+
+    yesBtn.onclick = function() {
+        modal.style.display = "none";
         resetGame();
-    } else {
+    };
+
+    noBtn.onclick = function() {
+        modal.style.display = "none";
         revealAnswers();
-    }
+    };
 }
 
 function resetGame() {
     tries = 5;
     selected = [];
     correctGroups = 0;
-    document.getElementById('tries').textContent = '5';
+    updateTriesDisplay();
     createBoard(); // Redraws the board for another attempt
 }
 
@@ -130,6 +139,10 @@ function revealAnswers() {
     });
 }
 
+function updateTriesDisplay() {
+    document.getElementById('status').innerHTML = 'Tries remaining: ' + tries;
+}
+
 function createBoard() {
     const board = document.getElementById('game-board');
     const allWords = shuffle(Object.values(groups).flat());
@@ -144,30 +157,6 @@ function createBoard() {
     });
 }
 
+// Initialize game
 createBoard();
-
-function offerOptions() {
-    const modal = document.getElementById('confirmModal');
-    const yesBtn = document.getElementById('yesBtn');
-    const noBtn = document.getElementById('noBtn');
-
-    modal.style.display = "block";
-
-    yesBtn.onclick = function() {
-        modal.style.display = "none";
-        resetGame();
-    }
-
-    noBtn.onclick = function() {
-        modal.style.display = "none";
-        revealAnswers();
-    }
-}
-
-// Add this to handle clicking outside of the modal to close it
-window.onclick = function(event) {
-    const modal = document.getElementById('confirmModal');
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
+updateTriesDisplay();
