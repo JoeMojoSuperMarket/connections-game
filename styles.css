@@ -236,3 +236,22 @@ body {
     height: auto;
     transition: top 3s, left 3s; /* Smooth transition for moving */
 }
+
+
+#FakeAd {
+    position: fixed; /* Keep the banner fixed during scrolling */
+    bottom: 20px; /* Align to the bottom */
+    left: 50%; /* Start from the middle */
+    transform: translateX(-50%); /* Shift it back by half of its width to truly center it */
+    width: 60%; /* The width of the banner, adjust as needed */
+    padding: 30px 0; /* Padding for the text */
+    background-color: #FFFF00; /* Light grey background, change as you like */
+    color: black; /* Dark grey text color, change as you like */
+    text-align: center; /* Center the text inside the banner */
+    box-shadow: 0px -3px 5px rgba(0,0,0,0.2); /* Subtle shadow for a lifted effect */
+    font-size: 20px; /* Font size of the text */
+    z-index: 100; /* Ensure it's above other content */
+    font-family: 'Gooper', sans-serif;
+    font-weight: bold;
+
+}
